@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    tags:
+      - v**
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org/"
+      - run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - run: yarn install --immutable --immutable-cache --check-cache
+      - run: yarn tsc
+      - run: yarn build
+      # VERSION has v prefix but yarn wants valid semver.
+      - run: yarn publish --new-version ${VERSION:1} --access public --no-git-tag-version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          VERSION: ${{ github.ref_name }}

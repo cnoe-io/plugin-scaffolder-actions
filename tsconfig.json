@@ -1,0 +1,21 @@
+{
+  "extends": "@backstage/cli/config/tsconfig.json",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ESNext",
+    "outDir": "dist-types",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "types": [
+      "node",
+      "jest",
+      "webpack-env"
+    ]
+  }
+}
