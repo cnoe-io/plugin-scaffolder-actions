@@ -1,11 +1,11 @@
-# CNOE Scaffolder Backend Plugins
+# CNOE Scaffolder Actions Plugin
 
 ## Getting Started
 
 Add to your Backstage app.
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/backend @cnoe-io/scaffolder-actions
+yarn add --cwd packages/backend @cnoe-io/scaffolder-actions-plugin
 ```
 ```bash
 # To be able to keep using the built-in actions.
@@ -20,9 +20,9 @@ import { ScmIntegrations } from '@backstage/integration';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import {
-  sanitizeResource,
-  verifyDependency,
-  kubernetesApply,
+  createSanitizeResource,
+  createVerifyDependency,
+  createKubernetesApply,
 } from "@cnoe-io/scaffolder-actions";
 
 export default async function createPlugin(
@@ -40,9 +40,9 @@ export default async function createPlugin(
 
   const actions = [
       ...builtInActions,
-      sanitizeResource(),
-      verifyDependency(),
-      kubernetesApply(),
+      createSanitizeResource(),
+      createVerifyDependency(),
+      createKubernetesApply(),
   ]
 
   return await createRouter({
@@ -68,7 +68,17 @@ spec:
   steps:
     - id: sanitize-resource
       name: Sanitize Resource
-      action: cnoe:sanitize
+      action: cnoe:utils:sanitize
       input:
         resource: ${{ serialize.output }}
 ```
+
+## List of Actions
+
+Here is a list of running actions.
+
+| Action                 | id                     | Description                                                        | Reference                            |
+|------------------------|------------------------|--------------------------------------------------------------------|--------------------------------------|
+| createKubernetesApply  | `cnoe:kubernetes:apply`  | Apply Kubernetes manifest to a template                            | [k8s-apply](src/actions/k8s-apply.ts) |
+| createVerifyDependency | `cnoe:verify:dependency` | Verify resource dependencies for CNOE                              | [verify](src/actions/verify.ts)      |
+| createSanitizeResource | `cnoe:utils:sanitize`    | Sanitize resources (remove empty fields) before further processing | [sanitize](src/actions/sanitize.ts)  |

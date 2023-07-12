@@ -1,5 +1,5 @@
 {
-  "name": "@cnoe-io/scaffolder-actions",
+  "name": "@cnoe-io/scaffolder-actions-plugin",
   "version": "0.1.0",
   "description": "A custom Backstage scaffolder action to do CNOE verifications",
   "main": "dist/index.cjs.js",
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cnoe-io/scaffolder-actions.git"
+    "url": "git+https://github.com/cnoe-io/scaffolder-actions-plugin.git"
   },
   "keywords": [
     "backstage",
@@ -54,7 +54,7 @@
     "@types/node": "^18.11.3"
   },
   "bugs": {
-    "url": "https://github.com/cnoe-io/scaffolder-actions/issues"
+    "url": "https://github.com/cnoe-io/scaffolder-actions-plugin/issues"
   },
-  "homepage": "https://github.com/cnoe-io/scaffolder-actions#readme"
+  "homepage": "https://github.com/cnoe-io/scaffolder-actions-plugin#readme"
 }

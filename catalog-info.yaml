@@ -1,16 +1,16 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: scaffolder-actions
+  name: scaffolder-actions-plugin
   description: |
     A custom Backstage scaffolder action to perform CNOE verifications
   links:
     - title: Repository
-      url: https://github.com/cnoe-io/scaffolder-actions
+      url: https://github.com/cnoe-io/scaffolder-actions-plugin
     - title: npm
-      url: https://www.npmjs.com/package/@cnoe-io/scaffolder-actions
+      url: https://www.npmjs.com/package/@cnoe-io/scaffolder-actions-plugin
   annotations:
-    github.com/project-slug: cnoe-io/scaffolder-actions
+    github.com/project-slug: cnoe-io/scaffolder-actions-plugin
   tags:
     - backstage
     - apply
