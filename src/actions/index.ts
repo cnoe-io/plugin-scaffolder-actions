@@ -1,3 +1,3 @@
-export {sanitizeResource} from "./sanitize";
-export {verifyDependency} from "./verify";
-export {kubernetesApply} from "./k8s-apply";
+export {createSanitizeResource} from "./sanitize";
+export {createVerifyDependency} from "./verify";
+export {createKubernetesApply} from "./k8s-apply";

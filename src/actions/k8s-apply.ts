@@ -1,8 +1,8 @@
 import {createTemplateAction} from '@backstage/plugin-scaffolder-backend';
 import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
-import YAML from 'yaml';
+import yaml from 'js-yaml';
 
-export const kubernetesApply = () => {
+export const createKubernetesApply = () => {
     return createTemplateAction<{
         manifest: string;
         namespaced: boolean;
@@ -27,7 +27,7 @@ export const kubernetesApply = () => {
             },
         },
         async handler(ctx) {
-            const obj = YAML.parse(ctx.input.manifest);
+            const obj: any = yaml.load(ctx.input.manifest);
             const words = obj.apiVersion.split('/');
             const group = words[0];
             const version = words[1];

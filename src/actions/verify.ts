@@ -20,7 +20,7 @@ class ConsoleLogStream extends Writable {
     }
 }
 
-export const verifyDependency = () => {
+export const createVerifyDependency = () => {
     return createTemplateAction<{
         verifiers: string[];
     }>({

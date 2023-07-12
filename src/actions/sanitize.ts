@@ -1,7 +1,7 @@
 import {createTemplateAction} from '@backstage/plugin-scaffolder-backend';
 import yaml from 'js-yaml';
 
-export const sanitizeResource = () => {
+export const createSanitizeResource = () => {
     return createTemplateAction<{
         document: string;
     }>({
