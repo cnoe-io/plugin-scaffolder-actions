@@ -42,7 +42,7 @@ export default async function createPlugin(
       ...builtInActions,
       createSanitizeResource(),
       createVerifyDependency(),
-      createKubernetesApply(),
+      createKubernetesApply(env.config),
   ]
 
   return await createRouter({
