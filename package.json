@@ -41,6 +41,7 @@
   "author": "Amazon Web Services",
   "license": "Apache-2.0",
   "dependencies": {
+    "@backstage/integration": "^1.5.1",
     "@backstage/plugin-scaffolder-backend": "^1.7.0",
     "@backstage/types": "^1.0.0",
     "@kubernetes/client-node": "^0.17.1",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@backstage/cli": "^0.22.8",
     "@types/command-exists": "^1.2.0",
+    "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.11.3"
   },
   "bugs": {
