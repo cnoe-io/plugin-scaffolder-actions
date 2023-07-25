@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cnoe-io/scaffolder-actions-plugin.git"
+    "url": "git+https://github.com/cnoe-io/plugin-scaffolder-actions.git"
   },
   "keywords": [
     "backstage",
@@ -54,7 +54,7 @@
     "@types/node": "^18.11.3"
   },
   "bugs": {
-    "url": "https://github.com/cnoe-io/scaffolder-actions-plugin/issues"
+    "url": "https://github.com/cnoe-io/plugin-scaffolder-actions/issues"
   },
-  "homepage": "https://github.com/cnoe-io/scaffolder-actions-plugin#readme"
+  "homepage": "https://github.com/cnoe-io/plugin-scaffolder-actions#readme"
 }
