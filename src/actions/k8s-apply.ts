@@ -5,7 +5,7 @@ import { Config } from '@backstage/config';
 import { resolveSafeChildPath } from '@backstage/backend-common';
 import fs from 'fs-extra';
 
-export const kubernetesApply = (config: Config) => {
+export const createKubernetesApply = (config: Config) => {
     return createTemplateAction<{
         manifestString?: string;
         manifestObject?: any;
