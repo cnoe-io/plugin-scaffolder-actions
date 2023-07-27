@@ -37,12 +37,16 @@ export default async function createPlugin(
     config: env.config,
     reader: env.reader,
   });
+  
+  const cnoeActions = [
+    createSanitizeResource(),
+    createVerifyDependency(),
+    createKubernetesApply(env.config),
+  ]
 
   const actions = [
       ...builtInActions,
-      createSanitizeResource(),
-      createVerifyDependency(),
-      createKubernetesApply(env.config),
+      ...cnoeActions,
   ]
 
   return await createRouter({
@@ -82,3 +86,6 @@ Here is a list of running actions.
 | createKubernetesApply  | `cnoe:kubernetes:apply`  | Apply Kubernetes manifest to a template                            | [k8s-apply](src/actions/k8s-apply.ts) |
 | createVerifyDependency | `cnoe:verify:dependency` | Verify resource dependencies for CNOE                              | [verify](src/actions/verify.ts)      |
 | createSanitizeResource | `cnoe:utils:sanitize`    | Sanitize resources (remove empty fields) before further processing | [sanitize](src/actions/sanitize.ts)  |
+
+For more detailed information about these actions, go to `/create/actions` endpoint of your Backstage instance after installing these actions. 
+If you are running this locally, the endpoint should be `http://localhost:3000/create/actions`
