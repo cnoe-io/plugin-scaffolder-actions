@@ -1,5 +1,12 @@
-import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import { KubeConfig, CustomObjectsApi } from '@kubernetes/client-node';
+import {
+    ActionContext,
+    createTemplateAction,
+} from '@backstage/plugin-scaffolder-node';
+import {
+    KubeConfig,
+    CustomObjectsApi,
+    CoreV1Api,
+} from '@kubernetes/client-node';
 import YAML from 'yaml';
 import { Config } from '@backstage/config';
 import { resolveSafeChildPath } from '@backstage/backend-common';
@@ -22,12 +29,14 @@ export const createKubernetesApply = (config: Config) => {
                     manifestString: {
                         type: 'string',
                         title: 'Manifest',
-                        description: 'The manifest to apply in the cluster. Must be a string',
+                        description:
+                          'The manifest to apply in the cluster. Must be a string',
                     },
                     manifestObject: {
                         type: 'object',
                         title: 'Manifest',
-                        description: 'The manifest to apply in the cluster. Must be an object',
+                        description:
+                          'The manifest to apply in the cluster. Must be an object',
                     },
                     manifestPath: {
                         type: 'string',
@@ -45,6 +54,12 @@ export const createKubernetesApply = (config: Config) => {
                         description: 'The name of the cluster to apply this',
                     },
                 },
+            },
+            output: {
+                type: 'object',
+                title: 'Returned object',
+                description:
+                  'The object returned by Kubernetes by performing this operation',
             },
         },
         async handler(ctx) {
@@ -64,7 +79,8 @@ export const createKubernetesApply = (config: Config) => {
             const words = obj.apiVersion.split('/');
             const group = words[0];
             const version = words[1];
-            //hack. needs fixing to correctly extract the plurals
+
+            // hack. needs fixing to correctly extract the plurals
             const plural = `${obj.kind.toLowerCase()}s`;
             const kc = new KubeConfig();
             if (ctx.input.clusterName) {
@@ -87,7 +103,11 @@ export const createKubernetesApply = (config: Config) => {
                 });
                 kc.setCurrentContext(ctx.input.clusterName);
             } else {
-                kc.loadFromDefault()
+                kc.loadFromDefault();
+            }
+
+            if (version === undefined) {
+                return await handleCoreObjects(ctx, obj, kc);
             }
 
             const client = kc.makeApiClient(CustomObjectsApi);
@@ -111,21 +131,17 @@ export const createKubernetesApply = (config: Config) => {
                         ctx.logger.info(
                           `Successfully created ${obj.metadata.namespace}/${obj.metadata.name} Application: HTTP ${resp.response.statusCode}`,
                         );
+                        return resp.body;
                     },
                     err => {
                         ctx.logger.error(
                           `Failed to make PATCH call for ${obj.metadata.namespace}/${
                             obj.metadata.name
-                          } Application: Body ${JSON.stringify(
-                            err.body,
-                            null,
-                            2,
-                          )} Response ${JSON.stringify(err.response, null, 2)}.`,
+                          } Application: Body ${JSON.stringify(err.body, null, 2)}`,
                         );
                         throw err;
                     },
                   );
-                return;
             }
             await client
               .patchClusterCustomObject(
@@ -144,6 +160,7 @@ export const createKubernetesApply = (config: Config) => {
                     ctx.logger.info(
                       `Successfully created ${obj.metadata.name} Application: HTTP ${resp.response.statusCode}`,
                     );
+                    return resp.body;
                 },
                 err => {
                     ctx.logger.error(
@@ -158,6 +175,7 @@ export const createKubernetesApply = (config: Config) => {
                     throw err;
                 },
               );
+            return {};
         },
     });
 };
@@ -184,4 +202,33 @@ function getClusterConfig(name: string, config: Config): Config {
         throw new Error(`Cluster with name ${name} not found`);
     }
     return clusters[0];
+}
+
+async function handleCoreObjects(
+  ctx: ActionContext<any>,
+  obj: any,
+  kc: KubeConfig,
+): Promise<any> {
+    ctx.logger.info(`processing core object of kind ${obj.kind}`);
+    const client = kc.makeApiClient(CoreV1Api);
+    const opts = { headers: { 'Content-Type': 'application/apply-patch+yaml' } };
+    switch (obj.kind) {
+        case 'ConfigMap': {
+            const resp = await client.patchNamespacedConfigMap(
+              obj.metadata.name,
+              obj.metadata.namespace,
+              obj,
+              undefined,
+              undefined,
+              'backstage',
+              undefined,
+              true,
+              opts,
+            );
+            return resp.body;
+        }
+        default: {
+            throw Error(`kind ${obj.kind} is not supported`);
+        }
+    }
 }
