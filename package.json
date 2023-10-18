@@ -1,6 +1,6 @@
 {
   "name": "@cnoe-io/plugin-scaffolder-actions",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "A custom Backstage scaffolder action to do CNOE verifications",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
