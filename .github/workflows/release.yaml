@@ -24,7 +24,6 @@ jobs:
       - name: Create .npmrc file
         run: |
           echo registry=https://registry.npmjs.org/ > .npmrc
-          echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN  }}' >> .npmrc
       - name: Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
