@@ -1,8 +1,7 @@
 name: Release
 on:
   push:
-    tags:
-      - v**
+    branches: [main]
 
 jobs:
   publish:
@@ -16,11 +15,16 @@ jobs:
       - run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-      - run: yarn install --immutable --immutable-cache --check-cache
+      - name: Install dependencies
+        run: yarn install --immutable --immutable-cache --check-cache
+      - name: Install semantic-release extra plugins
+        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
       - run: yarn tsc
       - run: yarn build
-      # VERSION has v prefix but yarn wants valid semver.
-      - run: yarn publish --new-version ${VERSION:1} --access public --no-git-tag-version
+      - name: Create .npmrc file
+        run: |
+          echo registry=https://registry.npmjs.org/ > .npmrc
+      - name: Release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          VERSION: ${{ github.ref_name }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
