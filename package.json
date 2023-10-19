@@ -41,17 +41,20 @@
   "author": "Amazon Web Services",
   "license": "Apache-2.0",
   "dependencies": {
+    "@backstage/backend-common": "^0.19.1",
+    "@backstage/config": "^1.0.8",
     "@backstage/integration": "^1.5.1",
-    "@backstage/plugin-scaffolder-backend": "^1.7.0",
+    "@backstage/plugin-scaffolder-backend": "^1.15.1",
+    "@backstage/plugin-scaffolder-node": "^0.2.5",
     "@backstage/types": "^1.0.0",
-    "@kubernetes/client-node": "^0.17.1",
+    "@kubernetes/client-node": "^0.18.1",
     "@octokit/rest": "^19.0.5",
     "command-exists": "^1.2.9",
     "fs-extra": "^11.1.1",
     "yaml": "^2.3.1"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.22.8",
+    "@backstage/cli": "^0.22.9",
     "@types/command-exists": "^1.2.0",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.11.3"

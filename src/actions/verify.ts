@@ -1,7 +1,5 @@
-import {
-    createTemplateAction,
-    executeShellCommand,
-} from '@backstage/plugin-scaffolder-backend';
+import { executeShellCommand } from '@backstage/plugin-scaffolder-node';
+import { createTemplateAction }from '@backstage/plugin-scaffolder-node';
 import commandExists from 'command-exists';
 import {Writable} from 'stream';
 
@@ -74,4 +72,3 @@ export const createVerifyDependency = () => {
         },
     });
 };
-
